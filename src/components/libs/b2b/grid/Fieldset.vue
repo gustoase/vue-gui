@@ -1,6 +1,6 @@
 <template>
 	<fieldset>
-		<slot name="drop"></slot>
+		<slot name="meta"></slot>
 		<slot></slot>
 	</fieldset>
 </template>

@@ -1,6 +1,6 @@
 <template>
 	<div :class="col_size">
-		<slot name="drop"></slot>
+		<slot name="meta"></slot>
 		<slot></slot>
 	</div>
 </template>

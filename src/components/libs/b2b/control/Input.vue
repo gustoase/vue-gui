@@ -1,8 +1,9 @@
 <template>
     <div class="form-grp">
-        <label class="label-ctrl-hid" for="control_5c5495ca805bd">Имя</label>
+        <slot name="meta"></slot>
+        <label class="label-ctrl-hid">Имя</label>
         <div class="form-field">
-            <input class="form-ctrl" type="text">
+            <input class="form-ctrl" type="text" :value="value">
         </div>
         <small class="form-desc">Описание опционально.</small>
     </div>
@@ -10,6 +11,7 @@
 
 <script>
     export default {
-        name: "Input"
+        name: "Input",
+        props: ['value']
     }
 </script>

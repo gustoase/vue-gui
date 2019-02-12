@@ -1,84 +1,65 @@
 <template lang="html">
 	<v-flex editor rtype md12 fill-height>
-		<vddl-list :list="tree"
-				   effect-allowed="move"
-				   :drop="handleDrop"
-				   :external-sources="true">
-			<list v-for="(item, index) in tree"
-				  :key="item.id+index"
-				  :item="item"
-				  :list="tree"
-				  :index="index"
-				  paren-index="0"
-				  :selected="handleSelected"
-				  :selected-item="selectedItem">
-			</list>
-		</vddl-list>
+		<Block v-for="(item, index) in elements"
+			:key="genUniqueKey(item)"
+			:items="item.children"
+			:parent-index="index"
+			@update="updateStore"
+		>
+		</Block>
 	</v-flex>
 </template>
 
 <script>
-	import list from './editor/nested-list.vue';
-	import { mapGetters, mapMutations, mapActions } from 'vuex';
+	import Block from './editor/Block';
+	import { mapGetters, mapMutations } from 'vuex';
+
+	import loadComponents from '@/loadComponents';
+
 	export default {
+		components: {
+			Block
+		},
 		data() {
 			return {
-				selectedItem: null,
+				// дерево конструктора, где все компоненты собрали
+				elements: []
 			};
 		},
 		methods: {
-			...mapActions([
-				'inserItem',
-				'delItem'
+			...mapMutations([
+				'updateTree',
+				'loadTree',
+				'setActivePage'
 			]),
-			handleDrop(draggable) {
-				this.inserItem({
-					parent_level: 0,
-					event: draggable
-				});
-			},
-			handleSelected(item) {
-				this.selectedItem = item;
+			updateStore() {
+				this.updateTree(this.elements)
 			}
-		},
-		components: {
-			list
 		},
 		computed: {
 			...mapGetters([
 				'tree',
+				'active_lib',
 			])
 		},
+		beforeRouteUpdate (to, from, next) {
+			this.setActivePage(to.params.id);
+			this.loadTree();
+			loadComponents(this.active_lib);
+			this.elements = this.tree;
+			next();
+		},
+		mounted() {
+			loadComponents(this.active_lib);
+			if (!this.tree) {
+				this.setActivePage(this.$route.params.id);
+				this.loadTree();
+				this.elements = this.tree;
+			}
+		}
 	};
 </script>
 
 <style lang="less">
-	.vddl-placeholder {
-		width: 100%;
-		min-height: 40px;
-		line-height: 40px;
-		border-bottom: 1px solid #eee;
-		padding: 0 15px;
-		background: #f5f5f5;
-	}
-	.new-elements .vddl-dragging-source {
-		display: block;
-	}
-	.selected{
-		background: #f9f9f9;
-	}
-	.selected-item .panel__body {
-		line-height: 40px;
-	}
-	.panel__body {
-		border: 1px dotted;
-		padding: 5px;
-		width: 100%;
-		min-height: 40px;
-	}
 
-	.main-drop-list {
-		width: 100%;
-		height: 100%;
-	}
 </style>

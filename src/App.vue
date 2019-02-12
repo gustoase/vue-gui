@@ -10,10 +10,7 @@
 					class="top-taps"
 			>
 				<v-tab v-for="tab in tabs" :key="tab.icon" ripple>
-					<v-tooltip bottom>
-						<v-icon slot="activator">{{tab.icon}}</v-icon>
-						<span>{{tab.title}}</span>
-					</v-tooltip>
+					{{tab.title}}
 				</v-tab>
 				<v-tab-item v-for="tab in tabs" :key="tab.icon">
 					<v-expansion-panel expand>
@@ -29,18 +26,44 @@
 			<span class="logo-text">VUi</span>
 			<input class="project-name-input" type="text" placeholder="Название проекта">
 			<v-spacer></v-spacer>
-			<v-btn
-					flat
-					href="https://github.com/vuetifyjs/vuetify/releases/latest"
-					target="_blank"
-			>
-				<span class="mr-2">Latest Release</span>
-			</v-btn>
+			<v-tooltip bottom v-if="active_page_id">
+				<v-btn slot="activator" fab small color="white" :to="{ name: 'editor', params: { id: active_page_id } }">
+					<v-icon >developer_board</v-icon>
+				</v-btn>
+				<span>Редактор</span>
+			</v-tooltip>
+			<v-tooltip bottom v-if="active_page_id">
+				<v-btn slot="activator" fab small color="white" :to="{ name: 'preview', params: { id: active_page_id } }">
+					<v-icon>airplay</v-icon>
+				</v-btn>
+				<span>Превью</span>
+			</v-tooltip>
+			<v-tooltip bottom v-if="active_page_id">
+				<v-btn slot="activator" fab small color="white" :to="{ name: 'preview', params: { id: active_page_id } }">
+					<v-icon>developer_mode</v-icon>
+				</v-btn>
+				<span>JSON</span>
+			</v-tooltip>
 		</v-toolbar>
 		<v-content>
-			<v-container fluid fill-height>
-				<v-layout class="main-content">
-					<Container/>
+			<v-tabs
+					dark
+					color="cyan"
+					show-arrows
+					height="30px"
+			>
+				<v-tabs-slider color="yellow"></v-tabs-slider>
+
+				<v-tab :to="{ name: 'editor', params: { id: 1 }}">
+					Page1
+				</v-tab>
+				<v-tab :to="{ name: 'editor', params: { id: 2 }}">
+					Page2
+				</v-tab>
+			</v-tabs>
+			<v-container class="main-content" fluid fill-height>
+				<v-layout>
+					<router-view></router-view>
 				</v-layout>
 			</v-container>
 		</v-content>
@@ -48,14 +71,14 @@
 </template>
 
 <script>
-import Container from '@/components/Container';
-import TabElements from '@/components/editor/elements/List';
+import ComponentList from '@/components/editor/menu/ComponentList';
+
+import { mapMutations, mapGetters } from 'vuex';
 
 export default {
-	name:       'App',
+	name: 'App',
 	components: {
-		Container,
-		TabElements
+		ComponentList
 	},
 	data() {
 		return {
@@ -63,15 +86,25 @@ export default {
 				{
 					title:     'Компоненты',
 					icon:      'widgets',
-					component: TabElements
+					component: ComponentList
 				},
 				{
 					title: 'Страницы',
 					icon:  'dvr',
-					component: TabElements
+					component: ComponentList
 				}
 			]
 		}
+	},
+	computed: {
+		...mapGetters([
+			'active_page_id'
+		])
+	},
+	methods: {
+		...mapMutations([
+			'setActivePage'
+		]),
 	}
 }
 </script>
@@ -102,11 +135,13 @@ export default {
 		box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
 	}
 
-	.drop {
-		flex-basis: 100%;
-		-webkit-box-flex: 0;
-		-ms-flex-positive: 0;
-		flex-grow: 0;
-		max-width: 100%;
+	.main-content {
+		padding: 0;
+	}
+
+	.v-toolbar__content {
+		.v-btn--active {
+			/*background-color: red !important;*/
+		}
 	}
 </style>

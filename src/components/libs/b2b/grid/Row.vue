@@ -1,12 +1,12 @@
 <template>
-	<div>
-		<slot name="drop"></slot>
+	<div class="row">
+		<slot name="meta"></slot>
 		<slot></slot>
 	</div>
 </template>>
 
 <script>
 	export default {
-		name: 'Div'
+		name: 'Row'
 	}
 </script>
