@@ -1,0 +1,24 @@
+{
+  "add_page": "Add new page",
+  "tree_loading": "Tree loading...",
+  "configuration": "Configuration",
+  "new_page": "New page",
+  "cancel": "Cancel",
+  "create": "Create",
+  "close": "Close",
+  "components": "Components",
+  "welcome_title": "Create a new page to get started.",
+  "project_name": "Project name",
+  "editor": "Editor",
+  "preview": "Preview",
+
+
+  "size": "Size",
+  "text": "Text",
+  "label": "Label",
+  "description": "Description",
+  "color": "Color",
+  "legend": "Legend",
+  "controls": "Controls",
+  "grid": "Grid"
+}

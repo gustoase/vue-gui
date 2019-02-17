@@ -2,7 +2,7 @@
     <v-dialog persistent v-model="is_open" width="500">
         <v-card>
             <v-card-title class="headline grey lighten-2" primary-title>
-                Новая страница
+                {{$t('new_page')}}
             </v-card-title>
 
             <v-card-text>
@@ -27,10 +27,10 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn @click="$emit('closeModal')">
-                    Отмена
+                    {{$t('cancel')}}
                 </v-btn>
                 <v-btn color="primary" @click="createPage">
-                    Создать
+                    {{$t('create')}}
                 </v-btn>
             </v-card-actions>
         </v-card>

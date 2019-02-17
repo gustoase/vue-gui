@@ -1,5 +1,5 @@
 <template lang="html">
-	<v-flex editor rtype md12 fill-height>
+	<v-flex editor md12 fill-height>
 		<DraggableBlock v-for="(item, index) in elements"
 			:key="genUniqueKey(item)"
 			:items="item.children"
@@ -13,12 +13,9 @@
 				persistent
 				width="300"
 		>
-			<v-card
-					color="primary"
-					dark
-			>
+			<v-card color="primary" dark>
 				<v-card-text>
-					Загружаем дерево
+					{{ $t('tree_loading') }}
 					<v-progress-linear
 							indeterminate
 							color="white"

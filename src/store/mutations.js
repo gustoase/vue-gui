@@ -1,4 +1,4 @@
-import loadComponents from '@/loadComponents';
+import loadComponents from '@/tools/loadComponents';
 
 /**
  * Поиск страницы и ее данных по id
@@ -120,6 +120,9 @@ const mutations = {
     },
     setActiveProjectId(state, project_id) {
         state.active_project_id = project_id;
+    },
+    setCurrentLocale(state, locale) {
+        state.current_locale = locale;
     },
 
     ////////////////////////////// socket mutations //////////////////////////

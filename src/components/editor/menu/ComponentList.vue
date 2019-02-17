@@ -2,7 +2,7 @@
 	<v-expansion-panel>
 		<v-expansion-panel-content
 				v-for="(dir, name) in components" :key="genUniqueKey(dir)">
-			<div slot="header" class="title">{{getAliasDir(name)}}</div>
+			<div slot="header" class="title">{{$t(getAliasDir(name))}}</div>
 			<v-list>
 				<draggable
 						:list="dir"

@@ -6,10 +6,14 @@ import store from './store'
 import {genUniqueKey} from './mixin/guid'
 
 import VueSocketIO from 'vue-socket.io'
+import i18n from '@/plugins/i18n'
+import VueCookie from 'vue-cookie';
+
+Vue.use(VueCookie);
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: 'http://127.0.0.1:4113',
+  connection: process.env.VUE_APP_SOCKET_IO,
   vuex: {
     store,
     actionPrefix: 'socket_',
@@ -26,5 +30,6 @@ Vue.mixin({
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App)
 }).$mount('#app');

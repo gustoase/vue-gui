@@ -6,10 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-
-    "node-start": "nodemon --exec babel-node --watch server server/index.js",
     "node-build": "babel src --out-dir dist",
-    "node-serve": "node dist/server.js"
+    "node-serve": "node dist/server.js",
+    "node-start": "nodemon --exec babel-node --watch server server/index.js"
   },
   "dependencies": {
     "cookie-parser": "^1.4.4",
@@ -19,6 +18,8 @@
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
     "vue": "^2.6.4",
+    "vue-cookie": "^1.1.4",
+    "vue-i18n": "^8.0.0",
     "vue-json-pretty": "^1.4.1",
     "vue-router": "^3.0.1",
     "vue-socket.io": "^3.0.5",
@@ -31,6 +32,7 @@
     "@babel/core": "^7.3.3",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
+    "@kazupon/vue-i18n-loader": "^0.3.0",
     "@vue/cli-plugin-babel": "^3.4.0",
     "@vue/cli-plugin-eslint": "^3.4.0",
     "@vue/cli-service": "^3.4.0",
@@ -41,6 +43,7 @@
     "less-loader": "^4.1.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
+    "vue-cli-plugin-i18n": "^0.5.1",
     "vue-cli-plugin-vuetify": "^0.4.6",
     "vue-template-compiler": "^2.6.4",
     "vuetify-loader": "^1.2.1"

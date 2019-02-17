@@ -10,7 +10,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn @click="$emit('closeModal')">
-                    Закрыть
+                    {{$t('close')}}
                 </v-btn>
             </v-card-actions>
         </v-card>

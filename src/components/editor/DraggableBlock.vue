@@ -51,7 +51,7 @@
     import Draggable from 'vuedraggable'
     import ConfigMenuContext from './menu/ConfigMenuContext';
 
-    import { mapMutations, mapGetters } from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
         name: 'DraggableBlock',
         props: ['items', 'parentIndex'],

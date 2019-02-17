@@ -1,12 +1,13 @@
 import { VTextField, VSlider, VSelect} from 'vuetify/lib';
 export default {
     // Настройки каждого из контрола, использовать библиотеку vuetify, params - это доступные параметры для компонента vuetify
+    // Settings for each control, use the vuetify library, params are the available options for the vuetify component
     configurator: {
         Col: {
-            size: { // size - св-во которое передается в props компоненту
+            size: { // size - св-во которое передается в props компоненту / properties that are passed to the props component
                 value: 6,
                 control: VSlider,
-                label: 'Размер',
+                label: 'size', // locale name in en.json
                 params: {
                     'thumb-size': 24,
                     'thumb-label': true,
@@ -19,59 +20,49 @@ export default {
             value: {
                 value: '',
                 control: VTextField,
-                label: 'Текст',
-                params: {
-                    placeholder: 'Текст'
-                }
+                label: 'text', // locale name in en.json
+                params: {}
             },
             label: {
                 value: '',
                 control: VTextField,
-                label: 'Лейбл',
+                label: 'label',
                 params: {
-                    placeholder: 'Лейбл'
+                    placeholder: 'label'
                 }
             },
             description: {
                 value: '',
                 control: VTextField,
-                label: 'Описание',
-                params: {
-                    placeholder: 'Описание'
-                }
+                label: 'description',
+                params: {}
             }
         },
         TextArea: {
             text: {
                 value: '',
                 control: VTextField,
-                label: 'Текст',
-                params: {
-                    placeholder: 'Текст'
-                }
+                label: 'text',
+                params: {}
             },
             label: {
                 value: '',
                 control: VTextField,
-                label: 'Лейбл',
-                params: {
-                    placeholder: 'Лейбл'
-                }
+                label: 'label',
+                params: {}
             },
             description: {
                 value: '',
                 control: VTextField,
-                label: 'Описание',
-                params: {
-                    placeholder: 'Описание'
-                }
+                label: 'description',
+                params: {}
             }
         },
         Button: {
             color: {
                 value: 'btn-primary',
                 control: VSelect,
-                label: 'Цвет',
+                label: 'color',
                 params: {
                     items: [
                         'btn-default',
@@ -80,36 +71,33 @@ export default {
                 }
             },
             value: {
-                value: 'Текст',
+                value: 'Text value',
                 control: VTextField,
-                label: 'Текст',
-                params: {
-                    placeholder: 'Текст'
-                }
+                label: 'text',
+                params: {}
             }
         },
         Radio: {
             label: {
                 value: '',
                 control: VTextField,
-                label: 'Лейбл',
-                params: {
-                    placeholder: 'Лейбл'
-                }
+                label: 'label',
+                params: {}
             }
         },
         Fieldset: {
             legend: {
                 value: '',
                 control: VTextField,
-                label: 'Легенда',
+                label: 'legend',
                 params: {
-                    placeholder: 'Легенда'
+                    placeholder: 'Legend fieldset'
                 }
             }
         }
     },
     // Конфигурационные параметры для контролов которые работают с редактором
+    // Configuration parameters for controls that work with the editor
     info: {
         Col: {
             is_nested: true, // required
@@ -149,8 +137,9 @@ export default {
         },
     },
     // Нормальные названия для директорий компонентов
+    // Normal names for component directories
     alias_dirs: { // required
-        control: 'Контролы',
-        grid: 'Сетка',
+        control: 'controls', // controls - locale name in en.json
+        grid: 'grid',
     }
 }

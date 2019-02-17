@@ -26,10 +26,10 @@ function loadComponents(lib) {
     console.log('load components from lib:', lib);
 
     // конфиг настройки контролов
-    cache_components[lib].config = require(`../libs/${lib}/config.js`).default;
+    cache_components[lib].config = require(`../../libs/${lib}/config.js`).default;
 
 
-    const context = require.context('../libs', true, /\.vue$/);
+    const context = require.context('../../libs', true, /\.vue$/);
     context.keys().forEach(function (key) { // see: https://webpack.github.io/docs/context.html#context-module-api
         const control = key.match(/\/([^\/]+?)\/([^\/]+?)\/([^\/]+?)\.vue$/);
         let component_name = control[3];

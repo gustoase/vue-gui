@@ -9,7 +9,7 @@
             offset-y
     >
         <v-card>
-            <div class="body-2 pa-1 text-md-center">Конфигурация</div>
+            <div class="body-2 pa-1 text-md-center">{{ $t('configuration') }}</div>
 
             <v-divider></v-divider>
 
@@ -18,7 +18,7 @@
                     v-for="(conf, name) in config"
                     :key="genUniqueKey(conf)"
                 >
-                    <v-list-tile-title>{{conf.label}}</v-list-tile-title>
+                    <v-list-tile-title>{{$t(conf.label)}}</v-list-tile-title>
                     <v-list-tile-action>
                         <component
                                 :is="conf.control"

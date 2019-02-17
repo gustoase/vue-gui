@@ -4,24 +4,23 @@
 		<v-toolbar app color="primary">
 			<span class="logo-text" @click="$router.push({name: 'welcome'})">VUi</span>
 
-			<input v-if="!active_project_id" class="project-name-input" type="text" v-model="project_name" placeholder="Название проекта">
+			<input v-if="!active_project_id" class="project-name-input" type="text" v-model="project_name" :placeholder="$t('project_name')">
 			<span class="project-name" v-else>{{active_project_name}}</span>
 			<v-btn fab small @click="createNewProject">
 				<v-icon>add</v-icon>
 			</v-btn>
 
-
 			<v-tooltip bottom v-if="is_show_editor">
 				<v-btn slot="activator" fab small color="white" :to="{ name: 'editor', params: { id: active_page_id } }">
 					<v-icon >developer_board</v-icon>
 				</v-btn>
-				<span>Редактор</span>
+				<span>{{$t('editor')}}</span>
 			</v-tooltip>
 			<v-tooltip bottom v-if="is_show_editor">
 				<v-btn slot="activator" fab small color="white" :to="{ name: 'preview', params: { id: active_page_id } }">
 					<v-icon>airplay</v-icon>
 				</v-btn>
-				<span>Превью</span>
+				<span>{{$t('preview')}}</span>
 			</v-tooltip>
 			<v-tooltip bottom v-if="is_show_editor">
 				<v-btn slot="activator" fab small color="white" @click="is_show_source = true">
@@ -30,12 +29,7 @@
 				<span>JSON</span>
 			</v-tooltip>
 			<v-spacer></v-spacer>
-			<v-tooltip bottom>
-				<v-btn slot="activator" small>
-					Кнопка
-				</v-btn>
-				<span>JSON</span>
-			</v-tooltip>
+			<LocaleMenu/>
 		</v-toolbar>
 		<v-content>
 			<PageNavigator/>
@@ -63,15 +57,17 @@
 	import NavigationDrawer from '@/components/NavigationDrawer';
 	import PageNavigator from '@/components/PageNavigator';
 	import ModalShowSource from '@/components/editor/ModalShowSource';
+	import LocaleMenu from '@/components/LocaleMenu';
 
-	import { mapMutations, mapGetters, mapState } from 'vuex';
+	import { mapMutations, mapState } from 'vuex';
 
 	export default {
 		name: 'App',
 		components: {
 			NavigationDrawer,
 			PageNavigator,
-			ModalShowSource
+			ModalShowSource,
+			LocaleMenu
 		},
 		computed: {
 			...mapState([

@@ -5,16 +5,12 @@
                 @createPage="createPage"
                 @closeModal="is_open_create_page = false"
         />
-        <v-tabs
-                dark
-                show-arrows
-                height="30px"
-        >
+        <v-tabs dark show-arrows height="30px">
             <v-tooltip bottom>
                 <v-btn slot="activator" fab small class="page-add-btn" @click="is_open_create_page = true">
                     <v-icon dark>add</v-icon>
                 </v-btn>
-                <span>Добавить страницу</span>
+                <span>{{$t('add_page')}}</span>
             </v-tooltip>
             <v-tabs-slider color="yellow"></v-tabs-slider>
 

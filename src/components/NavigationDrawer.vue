@@ -9,7 +9,7 @@
                 class="top-taps"
         >
             <v-tab v-for="tab in tabs" :key="tab.icon" ripple>
-                {{tab.title}}
+                {{$t(tab.title)}}
             </v-tab>
             <v-tab-item v-for="tab in tabs" :key="tab.icon">
                 <component v-bind:is="tab.component"></component>
@@ -27,15 +27,15 @@
             return {
                 tabs: [
                     {
-                        title:     'Компоненты',
+                        title:     'components',
                         icon:      'widgets',
                         component: ComponentList
                     },
-                    {
-                        title: 'Проекты',
-                        icon:  'dvr',
-                        component: ComponentList
-                    }
+                    // {
+                    //     title: 'Проекты',
+                    //     icon:  'dvr',
+                    //     component: ComponentList
+                    // }
                 ],
             }
         },

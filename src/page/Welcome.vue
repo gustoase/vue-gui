@@ -1,6 +1,6 @@
 <template>
-    <v-flex rtype md12 fill-height>
-        <v-flex tag="h1" class="headline">Создайте новую страницу чтобы начать работать</v-flex>
+    <v-flex md12 fill-height>
+        <v-flex tag="h1" class="headline">{{$t('welcome_title')}}</v-flex>
         <v-flex md4>
             <v-list>
                 <v-list-tile
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-    import {mapMutations, mapGetters, mapState} from 'vuex';
+    import {mapMutations, mapState} from 'vuex';
 
     export default {
         name: "Welcome",
