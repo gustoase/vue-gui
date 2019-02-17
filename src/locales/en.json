@@ -20,5 +20,9 @@
   "color": "Color",
   "legend": "Legend",
   "controls": "Controls",
-  "grid": "Grid"
+  "grid": "Grid",
+  "value": "Value",
+  "resource": "Resource",
+  "width": "Width",
+  "widget": "Widgets"
 }

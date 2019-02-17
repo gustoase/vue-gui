@@ -11,7 +11,7 @@ let store = new Vuex.Store({
         active_project_id: null,
         active_project_name: null,
         project_list: [],
-        active_lib: 'example',
+        active_lib: 'vuetify',
         active_page_id: null,
         active_page_index: null,
         lib_load: false, // загружена ли внешняя библиотека для работы в редакторе

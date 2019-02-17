@@ -29,6 +29,10 @@ let ProjectSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  lib: {
+    type: String,
+    required: true
+  },
   image: Buffer,
   created: {
     type: Date,

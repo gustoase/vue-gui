@@ -186,10 +186,7 @@
 
     .drag-area {
         min-height: 60px;
-
-        .row {
-            margin-right: 0;
-        }
+        min-width: 100%;
     }
 
     .sortable-ghost {
