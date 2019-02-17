@@ -2,56 +2,58 @@ import Vue from 'vue';
 
 let cache_components = {};
 
-function loadComponents(lib = '') {
+function loadComponents(lib) {
+    if (!lib) {
+        console.error('Lib name is required');
+        return;
+    }
     let components = {};
+    let flat_components = {};
 
     if (!cache_components[lib]) {
         cache_components[lib] = {
             components: {},
-            list_names: {}
+            component_names: {},
+            flat_component_names: {},
+            config: {}
         };
         console.log('create cache')
     } else {
         console.log('load from cache');
-        return cache_components[lib].list_names;
-
-        for (let component_name in cache_components[lib].components) {
-            if (!cache_components[lib].components.hasOwnProperty(component_name)) continue;
-
-            let config = cache_components[lib].components[component_name];
-            Vue.component(
-                component_name,
-                // Поиск опций компонента в `.default`, который будет существовать,
-                // если компонент экспортирован с помощью `export default`,
-                // иначе будет использован корневой уровень модуля.
-                config.default || config
-            )
-        }
+        return cache_components[lib];
     }
 
-    console.log('load components from lib:', lib)
-    const context = require.context('./components/libs', true, /\.vue$/)
+    console.log('load components from lib:', lib);
 
+    // конфиг настройки контролов
+    cache_components[lib].config = require(`../libs/${lib}/config.js`).default;
+
+
+    const context = require.context('../libs', true, /\.vue$/);
     context.keys().forEach(function (key) { // see: https://webpack.github.io/docs/context.html#context-module-api
+        const control = key.match(/\/([^\/]+?)\/([^\/]+?)\/([^\/]+?)\.vue$/);
+        let component_name = control[3];
+        const dir_name = control[2];
+        const lib_name = control[1];
 
-        const control = key.match(/\/([^\/]+?)\/([^\/]+?)\.vue$/);
-        let component_name = control[2];
-        const dir_name = control[1];
+        if (lib !== lib_name) {
+            return;
+        }
+
         const config = context(key);
 
-        if (lib) {
-            component_name = lib+'_'+component_name;
-        }
+        const lib_component_name = lib+'_'+component_name;
 
         if (!components[dir_name]) {
             components[dir_name] = {};
         }
-        components[dir_name][component_name] = component_name;
+        components[dir_name][component_name] = lib_component_name;
+        flat_components[component_name] = lib_component_name;
 
         cache_components[lib].components[component_name] = config;
 
         Vue.component(
-            component_name,
+            lib_component_name,
             // Поиск опций компонента в `.default`, который будет существовать,
             // если компонент экспортирован с помощью `export default`,
             // иначе будет использован корневой уровень модуля.
@@ -59,11 +61,10 @@ function loadComponents(lib = '') {
         )
     });
 
+    cache_components[lib].component_names = components;
+    cache_components[lib].flat_component_names = flat_components;
 
-
-    cache_components[lib].list_names = components;
-
-    return components;
+    return cache_components[lib];
 }
 
 export default loadComponents;

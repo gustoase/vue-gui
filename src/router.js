@@ -13,12 +13,12 @@ export default new Router({
     {
       path: '/editor/page/:id',
       name: 'editor',
-      component: () => import(/* webpackChunkName: "editor" */ '@/components/Container')
+      component: () => import(/* webpackChunkName: "editor" */ '@/page/Editor')
     },
     {
-      path: '/editor/page/:id',
+      path: '/preview/page/:id',
       name: 'preview',
-      component: () => import(/* webpackChunkName: "editor" */ '@/components/Container')
+      component: () => import(/* webpackChunkName: "editor" */ '@/page/Preview')
     },
   ]
 })

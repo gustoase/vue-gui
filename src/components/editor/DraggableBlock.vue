@@ -10,7 +10,6 @@
                 dragoverBubble: false
               }"
             @add="onUpdate"
-            :move="onMove"
     >
         <component
                 :is="getComponent(item)"
@@ -20,24 +19,30 @@
                 :data-level="parentIndex+'.'+i"
                 class="drag-component"
         >
-            <div slot="meta" class="drag-component-name" @click="menu($event, item)">
-                <v-icon v-if="isSettings(item.component)" small>settings</v-icon>
-                {{item.component}}
-                <ConfigMenuContext
-                        v-if="isSettings(item.component)"
-                        :menu_config="item.meta.menu"
-                        :config="getConfigComponent(item.component)"
-                        :item="item"
-                        @updateConfig="updateConfig"
-                />
+            <div slot="meta">
+                <div class="drag-component-name" @click="menu($event, item)">
+                    <v-icon v-if="isSettings(item.component)" small>settings</v-icon>
+                    {{item.component}}
+                    <ConfigMenuContext
+                            v-if="isSettings(item.component)"
+                            :menu_config="item.meta.menu"
+                            :config="getConfigComponent(item)"
+                            :item="item"
+                            @updateConfig="updateConfig"
+                    />
+                </div>
+                <div class="drag-component-remove" @click="remove($event, i)">
+                    <v-icon small>clear</v-icon>
+                </div>
             </div>
-            <Block
+
+            <DraggableBlock
                     v-if="item.is_nested && item.children"
                     :items="item.children"
                     :parent-index="parentIndex+'.'+i"
                     @update="onChildUpdate"
             >
-            </Block>
+            </DraggableBlock>
         </component>
     </Draggable>
 </template>
@@ -46,11 +51,9 @@
     import Draggable from 'vuedraggable'
     import ConfigMenuContext from './menu/ConfigMenuContext';
 
-    import config from '@/components/libs/b2b/config';
-
     import { mapMutations, mapGetters } from 'vuex';
     export default {
-        name: 'Block',
+        name: 'DraggableBlock',
         props: ['items', 'parentIndex'],
         components: {
             Draggable,
@@ -79,35 +82,45 @@
                     item.meta.menu.is_show = true;
                 });
             },
-            onMove({draggedContext, relatedContext}) {
-                return;
-                let parent = relatedContext.element || relatedContext.component.item;
-                let item = draggedContext.element;
-                if (
-                    parent.hasOwnProperty('allowed_child')
-                    && parent.allowed_child > 0
-                    && parent.allowed_child.indexOf(item.component) === -1
-                ) {
-                    return false;
+            getConfigComponent(item) {
+                console.log('getConfigComponent', this.config_component[item.component], item.config);
+                if (!item.config) {
+                    item.config = {};
                 }
-            },
-            getConfigComponent(component_name) {
-                return config[component_name] || {}
+                if (!this.config_component[item.component]) {
+                    return {};
+                }
+
+                for (let cfg_name in this.config_component[item.component]) {
+                    if (!this.config_component[item.component].hasOwnProperty(cfg_name)) continue;
+                    let default_value = this.config_component[item.component][cfg_name].value;
+
+                    this.config_component[item.component][cfg_name].value =
+                        typeof item.config[cfg_name] !== "undefined"
+                            ? item.config[cfg_name]
+                            : default_value;
+                }
+
+                return this.config_component[item.component];
             },
             isSettings(component_name) {
-                return Boolean(config[component_name]);
+                return Boolean(this.config_component[component_name]);
             },
             updateConfig() {
                 this.$emit('update');
             },
             getComponent(item) {
                 return this.active_lib+'_'+item.component;
+            },
+            remove(e, index) {
+                this.items.splice(index, 1);
+                this.$emit('update');
             }
         },
         computed: {
             ...mapGetters([
-                'components_instances',
-                'active_lib'
+                'active_lib',
+                'config_component'
             ])
         }
     };
@@ -119,14 +132,23 @@
         min-height: 100%;
     }
 
+    .drag-component:hover div.drag-component-name {
+        display: block;
+    }
+    .drag-component:hover .drag-component-remove {
+        display: block;
+    }
+
     .drag-component{
-        border: 1px solid #DDDDDD;
+        position: relative;
+        border: 1px dotted #DDDDDD;
         border-radius: 2px;
-        padding: 30px 14px 0;
+        padding: 30px 14px 2px;
         background-color: #FFF;
-        box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);
+        /*box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);*/
 
         &-name {
+            display: none;
             background-color: #F5F5F5;
             border: 1px solid #DDDDDD;
             border-radius: 4px 0 4px 0;
@@ -135,6 +157,24 @@
             font-size: 12px;
             font-weight: bold;
             left: -1px;
+            padding: 3px;
+            position: absolute;
+            top: -1px;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
+        }
+        &-remove {
+            display: none;
+            cursor: pointer;
+            background-color: #e6e6e6;
+            border: 1px solid #DDDDDD;
+            border-radius: 4px 0 4px 0;
+            color: #9DA0A4;
+            content: "Column";
+            font-size: 12px;
+            font-weight: bold;
+            right: -1px;
             padding: 3px;
             position: absolute;
             top: -1px;

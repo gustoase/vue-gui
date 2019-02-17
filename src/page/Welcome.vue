@@ -1,29 +1,56 @@
 <template>
     <v-flex rtype md12 fill-height>
-        <v-flex tag="h1" class="headline">Lorem Ipsum</v-flex>
-        <v-flex d-flex xs12 order-xs5>
-            <v-layout column>
-                <v-flex>
-                    <v-card flat>
-                        <v-card-text>{{ lorem }}</v-card-text>
-                    </v-card>
-                </v-flex>
-                <v-flex>
-                    <v-card flat>
-                        <v-card-text>{{ lorem }}</v-card-text>
-                    </v-card>
-                </v-flex>
-            </v-layout>
+        <v-flex tag="h1" class="headline">Создайте новую страницу чтобы начать работать</v-flex>
+        <v-flex md4>
+            <v-list>
+                <v-list-tile
+                        v-for="project in project_list"
+                        :key="project._id"
+                        @click="selectProject(project)"
+                >
+                    <v-list-tile-action>
+                        <v-icon color="pink">star</v-icon>
+                    </v-list-tile-action>
+
+                    <v-list-tile-content>
+                        <v-list-tile-title v-text="project.name"></v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
         </v-flex>
     </v-flex>
 </template>
 
 <script>
+    import {mapMutations, mapGetters, mapState} from 'vuex';
+
     export default {
         name: "Welcome",
-        data: () => ({
-            lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`
-        })
+        computed: {
+            ...mapState([
+                'project_list',
+                'active_page_index',
+                'active_page_id',
+                'active_project_id',
+            ])
+        },
+        watch: {
+            active_page_id() {
+                this.$router.push({name: 'editor', params: {id: this.active_page_id}});
+            }
+        },
+        methods: {
+            ...mapMutations([
+                'loadProject'
+            ]),
+            selectProject(project) {
+                if (project._id === this.active_project_id && this.active_page_id) {
+                    this.$router.push({name: 'editor', params: {id: this.active_page_id}});
+                } else {
+                    this.$socket.emit('loadProject', project._id);
+                }
+            }
+        }
     }
 </script>
 

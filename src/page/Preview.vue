@@ -1,24 +1,23 @@
 <template lang="html">
 	<v-flex editor rtype md12 fill-height>
-		<Block v-for="(item, index) in elements"
+		<PreviewBlock v-for="(item, index) in elements"
 			:key="genUniqueKey(item)"
-			:items="item.children"
+			:item="item"
+			:index="index"
 			:parent-index="index"
-			@update="updateStore"
 		>
-		</Block>
+		</PreviewBlock>
 	</v-flex>
 </template>
 
 <script>
-	import Block from './editor/Block';
+	import PreviewBlock from '@/components/editor/PreviewBlock';
 	import { mapGetters, mapMutations } from 'vuex';
 
-	import loadComponents from '@/loadComponents';
-
 	export default {
+		name: 'Preview',
 		components: {
-			Block
+			PreviewBlock
 		},
 		data() {
 			return {
@@ -28,13 +27,9 @@
 		},
 		methods: {
 			...mapMutations([
-				'updateTree',
-				'loadTree',
-				'setActivePage'
+				'setActivePage',
+				'loadComponents'
 			]),
-			updateStore() {
-				this.updateTree(this.elements)
-			}
 		},
 		computed: {
 			...mapGetters([
@@ -44,22 +39,30 @@
 		},
 		beforeRouteUpdate (to, from, next) {
 			this.setActivePage(to.params.id);
-			this.loadTree();
-			loadComponents(this.active_lib);
+			if (!this.tree) {
+				this.$router.push({name: 'index'})
+			}
 			this.elements = this.tree;
 			next();
 		},
 		mounted() {
-			loadComponents(this.active_lib);
+			console.log('container preview editor mounted');
+			this.loadComponents();
+			this.setActivePage(this.$route.params.id);
 			if (!this.tree) {
-				this.setActivePage(this.$route.params.id);
-				this.loadTree();
-				this.elements = this.tree;
+				this.$router.push({name: 'index'})
 			}
+			this.elements = this.tree;
 		}
 	};
 </script>
 
 <style lang="less">
+	.layout {
+		background-color: white;
 
+		.editor {
+			padding: 10px;
+		}
+	}
 </style>

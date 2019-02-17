@@ -1,66 +1,54 @@
 <template>
 	<v-app>
-		<v-navigation-drawer app right permanent>
-			<v-tabs
-					color="primary"
-					dark
-					grow
-					height="64px"
-					slider-color="yellow"
-					class="top-taps"
-			>
-				<v-tab v-for="tab in tabs" :key="tab.icon" ripple>
-					{{tab.title}}
-				</v-tab>
-				<v-tab-item v-for="tab in tabs" :key="tab.icon">
-					<v-expansion-panel expand>
-						<v-expansion-panel-content >
-							<div slot="header">{{tab.title}}</div>
-							<component v-bind:is="tab.component"></component>
-						</v-expansion-panel-content>
-					</v-expansion-panel>
-				</v-tab-item>
-			</v-tabs>
-		</v-navigation-drawer>
+		<NavigationDrawer v-if="is_show_editor"/>
 		<v-toolbar app color="primary">
-			<span class="logo-text">VUi</span>
-			<input class="project-name-input" type="text" placeholder="Название проекта">
-			<v-spacer></v-spacer>
-			<v-tooltip bottom v-if="active_page_id">
+			<span class="logo-text" @click="$router.push({name: 'welcome'})">VUi</span>
+
+			<input v-if="!active_project_id" class="project-name-input" type="text" v-model="project_name" placeholder="Название проекта">
+			<span class="project-name" v-else>{{active_project_name}}</span>
+			<v-btn fab small @click="createNewProject">
+				<v-icon>add</v-icon>
+			</v-btn>
+
+
+			<v-tooltip bottom v-if="is_show_editor">
 				<v-btn slot="activator" fab small color="white" :to="{ name: 'editor', params: { id: active_page_id } }">
 					<v-icon >developer_board</v-icon>
 				</v-btn>
 				<span>Редактор</span>
 			</v-tooltip>
-			<v-tooltip bottom v-if="active_page_id">
+			<v-tooltip bottom v-if="is_show_editor">
 				<v-btn slot="activator" fab small color="white" :to="{ name: 'preview', params: { id: active_page_id } }">
 					<v-icon>airplay</v-icon>
 				</v-btn>
 				<span>Превью</span>
 			</v-tooltip>
-			<v-tooltip bottom v-if="active_page_id">
-				<v-btn slot="activator" fab small color="white" :to="{ name: 'preview', params: { id: active_page_id } }">
+			<v-tooltip bottom v-if="is_show_editor">
+				<v-btn slot="activator" fab small color="white" @click="is_show_source = true">
 					<v-icon>developer_mode</v-icon>
+				</v-btn>
+				<span>JSON</span>
+			</v-tooltip>
+			<v-spacer></v-spacer>
+			<v-tooltip bottom>
+				<v-btn slot="activator" small>
+					Кнопка
 				</v-btn>
 				<span>JSON</span>
 			</v-tooltip>
 		</v-toolbar>
 		<v-content>
-			<v-tabs
-					dark
-					color="cyan"
-					show-arrows
-					height="30px"
+			<PageNavigator/>
+			<v-alert
+					:value="server_error"
+					dismissible
+					type="error"
 			>
-				<v-tabs-slider color="yellow"></v-tabs-slider>
-
-				<v-tab :to="{ name: 'editor', params: { id: 1 }}">
-					Page1
-				</v-tab>
-				<v-tab :to="{ name: 'editor', params: { id: 2 }}">
-					Page2
-				</v-tab>
-			</v-tabs>
+				{{server_error}}
+			</v-alert>
+			<ModalShowSource
+					:is_open="is_show_source"
+					@closeModal="is_show_source = false"/>
 			<v-container class="main-content" fluid fill-height>
 				<v-layout>
 					<router-view></router-view>
@@ -71,54 +59,70 @@
 </template>
 
 <script>
-import ComponentList from '@/components/editor/menu/ComponentList';
 
-import { mapMutations, mapGetters } from 'vuex';
+	import NavigationDrawer from '@/components/NavigationDrawer';
+	import PageNavigator from '@/components/PageNavigator';
+	import ModalShowSource from '@/components/editor/ModalShowSource';
 
-export default {
-	name: 'App',
-	components: {
-		ComponentList
-	},
-	data() {
-		return {
-			tabs: [
-				{
-					title:     'Компоненты',
-					icon:      'widgets',
-					component: ComponentList
-				},
-				{
-					title: 'Страницы',
-					icon:  'dvr',
-					component: ComponentList
-				}
-			]
+	import { mapMutations, mapGetters, mapState } from 'vuex';
+
+	export default {
+		name: 'App',
+		components: {
+			NavigationDrawer,
+			PageNavigator,
+			ModalShowSource
+		},
+		computed: {
+			...mapState([
+				'active_project_id',
+				'active_project_name',
+				'active_page_id',
+				'server_error'
+			]),
+			is_show_editor() {
+				return this.active_page_id && this.active_project_id;
+			}
+		},
+		methods: {
+			...mapMutations([
+				'setActiveProjectId',
+				'createProject',
+				'loadProject'
+			]),
+			createNewProject() {
+				this.$socket.emit('createProject', {
+					name: this.project_name
+				});
+			}
+		},
+		data() {
+			return {
+				is_show_source: false,
+				project_name: ''
+			}
+		},
+		mounted() {
+			this.$socket.emit('loadListProject');
 		}
-	},
-	computed: {
-		...mapGetters([
-			'active_page_id'
-		])
-	},
-	methods: {
-		...mapMutations([
-			'setActivePage'
-		]),
 	}
-}
 </script>
 
 <style lang="less" scoped>
-	.project-name-input {
-		color: #dcdcdc;
-		font-size: 20px;
-		border: 0;
-		height: 56px;
-		width: 400px;
-		background: transparent;
-		outline: none;
+	.project-name {
+		width: 300px;
+
+		&-input {
+			color: #dcdcdc;
+			font-size: 20px;
+			border: 0;
+			height: 56px;
+			width: 400px;
+			background: transparent;
+			outline: none;
+		}
 	}
+
 	.project-name-input::placeholder {
 		color: #dcdcdc;
 	}
@@ -128,8 +132,9 @@ export default {
 		color: white;
 		font-weight: bold;
 		margin-right: 20px;
+		cursor: pointer;
 	}
-	.editor {
+	.editor-id {
 		padding: 10px;
 		background-color: white;
 		box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
@@ -143,5 +148,9 @@ export default {
 		.v-btn--active {
 			/*background-color: red !important;*/
 		}
+	}
+	.page-add-btn {
+		width: 17px;
+		height: 17px;
 	}
 </style>

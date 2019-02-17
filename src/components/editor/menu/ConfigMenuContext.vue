@@ -54,7 +54,6 @@
                 user_config: {}
             }
         },
-
         watch: {
             user_config: {
                 handler: function () {
