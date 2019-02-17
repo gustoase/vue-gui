@@ -1,4 +1,4 @@
-# vuegui
+# vui-gui
 
 ## Project setup
 ```
