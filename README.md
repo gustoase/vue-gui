@@ -10,9 +10,10 @@ npm install
 
 
 ### Compiles and hot-reloads for development
-```
-npm run serve
-```
+0) mongod - start mongodb
+1) npm run serve - run vue cli
+2) npm run node-start - run server
+3) go to http://localhost:8080
 
 ### Compiles and minifies for production
 ```
