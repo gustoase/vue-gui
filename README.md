@@ -5,6 +5,10 @@
 npm install
 ```
 
+1) You need to run mongodb
+2) Create a database *vue-gui* or edit the config */server/config.js*
+
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
