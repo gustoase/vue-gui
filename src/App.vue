@@ -6,7 +6,7 @@
 
 			<input v-if="!active_project_id" class="project-name-input" type="text" v-model="project_name" :placeholder="$t('project_name')">
 			<span class="project-name" v-else>{{active_project_name}}</span>
-			<v-btn fab small @click="createNewProject">
+			<v-btn v-if="false" fab small @click="createNewProject">
 				<v-icon>add</v-icon>
 			</v-btn>
 
@@ -87,9 +87,9 @@
 				'loadProject'
 			]),
 			createNewProject() {
-				this.$socket.emit('createProject', {
-					name: this.project_name
-				});
+				// this.$socket.emit('createProject', {
+				// 	name: this.project_name
+				// });
 			}
 		},
 		data() {
@@ -99,7 +99,7 @@
 			}
 		},
 		mounted() {
-			this.$socket.emit('loadListProject');
+			// this.$socket.emit('loadListProject');
 		}
 	}
 </script>

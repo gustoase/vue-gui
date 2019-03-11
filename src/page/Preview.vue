@@ -55,9 +55,9 @@
 						this.$router.push({name: 'welcome'})
 						return;
 					} else {
-						this.$socket.emit('loadProjectByPageId', {
-							page_id: this.$route.params.id
-						});
+						// this.$socket.emit('loadProjectByPageId', {
+						// 	page_id: this.$route.params.id
+						// });
 					}
 				}
 

@@ -8,8 +8,8 @@ Vue.use(Vuex);
 
 let store = new Vuex.Store({
     state: {
-        active_project_id: null,
-        active_project_name: null,
+        active_project_id: 1,
+        active_project_name: 'Test static',
         project_list: [],
         active_lib: 'vuetify',
         active_page_id: null,

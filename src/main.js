@@ -11,15 +11,15 @@ import VueCookie from 'vue-cookie';
 
 Vue.use(VueCookie);
 
-Vue.use(new VueSocketIO({
-  debug: true,
-  connection: process.env.VUE_APP_SOCKET_IO,
-  vuex: {
-    store,
-    actionPrefix: 'socket_',
-    mutationPrefix: 'socket_'
-  }
-}));
+// Vue.use(new VueSocketIO({
+//   debug: true,
+//   connection: process.env.VUE_APP_SOCKET_IO,
+//   vuex: {
+//     store,
+//     actionPrefix: 'socket_',
+//     mutationPrefix: 'socket_'
+//   }
+// }));
 
 Vue.config.productionTip = false;
 

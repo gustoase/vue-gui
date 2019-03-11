@@ -50,11 +50,11 @@
 			]),
 			updateStore() {
 				this.updateTree(this.elements)
-				this.$socket.emit('updateTree', {
-					project_id: this.active_project_id,
-					page_index: this.active_page_index,
-					tree: this.elements
-				});
+				// this.$socket.emit('updateTree', {
+				// 	project_id: this.active_project_id,
+				// 	page_index: this.active_page_index,
+				// 	tree: this.elements
+				// });
 			},
 			loadEditor() {
 				this.loadComponents();
@@ -64,9 +64,9 @@
 						this.$router.push({name: 'welcome'})
 						return;
 					} else {
-						this.$socket.emit('loadProjectByPageId', {
-							page_id: this.$route.params.id
-						});
+						// this.$socket.emit('loadProjectByPageId', {
+						// 	page_id: this.$route.params.id
+						// });
 					}
 				}
 

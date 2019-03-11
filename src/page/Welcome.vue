@@ -47,7 +47,7 @@
                 if (project._id === this.active_project_id && this.active_page_id) {
                     this.$router.push({name: 'editor', params: {id: this.active_page_id}});
                 } else {
-                    this.$socket.emit('loadProject', project._id);
+                    // this.$socket.emit('loadProject', project._id);
                 }
             }
         }

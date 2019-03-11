@@ -58,16 +58,16 @@
             createPage(name) {
                 this.createNewPage(name);
 
-                this.$socket.emit('createPage', {
-                    project_id: this.active_project_id,
-                    name: name,
-                    tree: [{
-                        component: 'Div',
-                        is_nested: true,
-                        params: {},
-                        children: []
-                    }]
-                });
+                // this.$socket.emit('createPage', {
+                //     project_id: this.active_project_id,
+                //     name: name,
+                //     tree: [{
+                //         component: 'Div',
+                //         is_nested: true,
+                //         params: {},
+                //         children: []
+                //     }]
+                // });
 
                 this.is_open_create_page = false;
                 let page_index = this.pages.length;

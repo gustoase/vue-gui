@@ -6,9 +6,20 @@ import loadComponents from '@/tools/loadComponents';
  * @param id
  * @returns {*}
  */
+// function findPageById(pages, id) { // by socket
+//     for (let i=0; i < pages.length; i++) {
+//         if (pages[i]._id === id) {
+//             return {
+//                 index: i,
+//                 page: pages[i]
+//             };
+//         }
+//     }
+//     return null;
+// }
 function findPageById(pages, id) {
     for (let i=0; i < pages.length; i++) {
-        if (pages[i]._id === id) {
+        if (pages[i].id === id) {
             return {
                 index: i,
                 page: pages[i]
